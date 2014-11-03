@@ -23,16 +23,32 @@ describe 'restaurants' do
 			expect(page).not_to have_content('No restaurants yet')
 		end
 	end
-end
 
-describe 'creating restaurants' do 
+	context 'creating restaurants' do 
 
-	it 'prompts user to fill out a form, then displays the new restaurant' do 
-		visit '/restaurants'
-		click_link 'Add a restaurant'
-		fill_in 'Name', with: 'KFC'
-		click_button 'Create Restaurant'
-		expect(page).to have_content('KFC')
-		expect(current_path).to eq('/restaurants')
+		it 'prompts user to fill out a form, then displays the new restaurant' do 
+			visit '/restaurants'
+			click_link 'Add a restaurant'
+			fill_in 'Name', with: 'KFC'
+			click_button 'Create Restaurant'
+			expect(page).to have_content('KFC')
+			expect(current_path).to eq('/restaurants')
+		end
 	end
+
+	context 'viewing restaurants' do 
+
+		before do 
+			@kfc = Restaurant.create(name:'KFC')
+		end
+
+		it 'lets a user view a restaurant' do 
+			visit '/restaurants'
+			click_link 'KFC'
+			expect(page).to have_content 'KFC'
+			expect(current_path).to eq "/restaurants/#{@kfc.id}"
+		end
+	end
+
 end
+
