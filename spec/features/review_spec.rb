@@ -37,9 +37,14 @@ describe 'reviewing' do
 			expect(page).to have_content('so so')
 		end
 
-
+		it "doesn't allow an user to leave more than one review per restaurant" do
+			visit '/restaurants'
+			click_link 'Review KFC'
+			fill_in 'Thoughts', with: "so so"
+			select '3', from: 'Rating'
+			click_button 'Leave Review'
+			expect(page).not_to have_content('Review KFC')
+		end
 	end
-
-
 
 end

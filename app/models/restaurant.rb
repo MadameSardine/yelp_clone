@@ -4,6 +4,9 @@ class Restaurant < ActiveRecord::Base
 
 	validates :name, length: {minimum: 3}, uniqueness: true
 
+  def has_been_reviewed_by?(user)
+      reviews.find_by(user: user)
+  end
 
 
 end
