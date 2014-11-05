@@ -46,4 +46,5 @@ gem 'omniauth-facebook'
 gem 'certified'
 gem 'warden', group: :test
 gem 'database_cleaner', group: :test
+gem 'poltergeist', group: :test
 

@@ -6,6 +6,17 @@ require 'rspec/rails'
 require 'capybara/rails'
 require 'database_cleaner'
 
+require 'capybara/poltergeist'
+
+Capybara.register_driver :poltergeist do |app|
+  Capybara::Poltergeist::Driver.new(app, {
+    :js_errors => false,
+    :debug => false
+    })
+  end
+Capybara.javascript_driver = :poltergeist
+# require 'support/database_cleaner'
+
 include Warden::Test::Helpers
 Warden.test_mode!
 
@@ -34,12 +45,22 @@ ActiveRecord::Migration.maintain_test_schema!
 RSpec.configure do |config|
 
   config.include Capybara::DSL
+  config.include Devise::TestHelpers, :type => :requests
+  config.include Warden::Test::Helpers, :type => :requests
 
   config.use_transactional_fixtures = false
 
   config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
+    # DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with :truncation
+  end
+
+   config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+   config.before(:each, :js => true) do
+    DatabaseCleaner.strategy = :truncation
   end
 
   config.before :each do
