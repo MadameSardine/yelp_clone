@@ -44,4 +44,6 @@ gem 'rspec-collection_matchers', group: :test
 gem 'devise'
 gem 'omniauth-facebook'
 gem 'certified'
+gem 'warden', group: :test
+gem 'database_cleaner', group: :test
 

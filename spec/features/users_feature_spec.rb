@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe 'User management' do 
+describe 'User management' do
 
-	context 'User not signed in and on the homepage' do 
+	context 'User not signed in and on the homepage' do
 
 		it "should see a 'Sign in' link and and 'Sign up' link" do
 			visit '/'
@@ -19,12 +19,8 @@ describe 'User management' do
 	context 'User signed in on the homepage' do
 
 		before do
-			visit ('/')
-			click_link ('Sign up')
-			fill_in('Email', with: 'test@example.com')
-			fill_in('Password', with: 'testtest')
-			fill_in('Password confirmation', with: 'testtest')
-			click_button('Sign up')
+			@user = User.create(email: 'test@test.com', password: 'password', password_confirmation: 'password')
+      login_as @user
 		end
 
 		it "should see a 'Sign out' link" do
