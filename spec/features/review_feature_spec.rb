@@ -79,3 +79,17 @@ describe 'deleting a review' do
 		end
 	end
 end
+
+describe 'showing the average rating' do
+
+	before do
+		@restaurant =	Restaurant.create(name: 'KFC')
+	end
+
+	it 'displays an average rating for all reviews' do
+		@review1 = Review.create(thoughts: 'So so', rating: 3, restaurant: @restaurant, user_id: 1)
+		@review2 = Review.create(thoughts: 'Great', rating: 5, restaurant: @restaurant, user_id: 2)
+		visit '/restaurants'
+		expect(page).to have_content("Average rating: 4")
+	end
+end
