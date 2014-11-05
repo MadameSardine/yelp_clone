@@ -95,18 +95,25 @@ describe 'editing restaurants' do
 	context 'User is logged in' do
 
 		before do
-			Restaurant.create(name: 'KFC')
 			@user = User.create(email: 'test@test.com', password: 'password', password_confirmation: 'password')
-			login_as @user
+			@user2 = User.create(email: 'second@test.com', password: 'password', password_confirmation: 'password')
+			Restaurant.create(name: 'KFC', user: @user)
 		end
 
-		it 'lets a user edit a restaurant' do
+		it 'let a user edit a restaurant it has created' do
+			login_as @user
 			visit '/restaurants'
 			click_link 'Edit KFC'
 			fill_in 'Name', with: 'Kentucky Fried Chicken'
 			click_button 'Update Restaurant'
 			expect(page).to have_content 'Kentucky Fried Chicken'
 			expect(current_path).to eq('/restaurants')
+		end
+
+		it "doesn't lets a user edit a restaurant it has not created" do
+			login_as @user2
+			visit '/restaurants'
+			expect(page).not_to have_content 'Edit KFC'
 		end
 
 	end
@@ -119,8 +126,7 @@ describe 'editing restaurants' do
 
 		it 'lets a user edit a restaurant' do
 			visit '/restaurants'
-			click_link 'Edit KFC'
-			expect(page).to have_content 'You need to sign in or sign up before continuing.'
+			expect(page).not_to have_content 'Edit KFC'
 		end
 
 	end
@@ -136,8 +142,7 @@ describe 'deleting restaurants' do
 
 		it "doesn't allow you to delete a restaurant" do
 			visit '/restaurants'
-			click_link 'Delete KFC'
-			expect(page).to have_content 'You need to sign in or sign up before continuing.'
+			expect(page).not_to have_content 'Delete KFC'
 		end
 
 	end
@@ -145,16 +150,23 @@ describe 'deleting restaurants' do
 	context 'User is logged in' do
 
 		before do
-			Restaurant.create(name: 'KFC')
 			@user = User.create(email: 'test@test.com', password: 'password', password_confirmation: 'password')
-			login_as @user
+			@user2 = User.create(email: 'second@test.com', password: 'password', password_confirmation: 'password')
+				Restaurant.create(name: 'KFC', user: @user)
 		end
 
-		it 'removes a restaurant when a user clicks a delete link' do
+		it 'let an user delete a restaurant he has created' do
+			login_as @user
 			visit '/restaurants'
 			click_link 'Delete KFC'
 			expect(page).not_to have_content 'KFC'
 			expect(page).to have_content 'Restaurant deleted successfully'
+		end
+
+		it "doesn't allow an user delete a restaurant he has not created" do
+			login_as @user2
+			visit '/restaurants'
+			expect(page).not_to have_content 'Delete KFC'
 		end
 	end
 end
