@@ -41,6 +41,41 @@ describe 'reviewing' do
 			click_button 'Leave Review'
 			expect(page).not_to have_content('Review KFC')
 		end
+
 	end
 
+end
+
+describe 'deleting a review' do
+
+	before do
+		@user = User.create(email: 'test@test.com', password: 'password', password_confirmation: 'password')
+		@user2 = User.create(email: 'second@test.com', password: 'password', password_confirmation: 'password')
+		@restaurant =	Restaurant.create(name: 'KFC', user: @user)
+		@review = Review.create(thoughts: 'ok ok', rating: 3, restaurant: @restaurant, user: @user)
+		end
+
+	context 'User is logged out' do
+			it "doesn't allow user to delete a review" do
+			visit '/restaurants'
+			expect(page).not_to have_content 'Delete review'
+		end
+	end
+
+	context ' User is logged in' do
+
+		it "doesn't allow an user to delete a review he has not written" do
+			login_as @user2
+			visit '/restaurants'
+			expect(page).not_to have_content 'Delete review'
+		end
+
+		it "allows an user to delete a review he has written" do
+			login_as @user
+			visit '/restaurants'
+			click_link 'Delete review'
+			expect(page).not_to have_content('ok ok')
+			expect(page).to have_content 'Review deleted successfully'
+		end
+	end
 end
