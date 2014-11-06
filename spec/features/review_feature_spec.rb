@@ -30,6 +30,7 @@ describe 'reviewing' do
 			select '3', from: 'Rating'
 			click_button 'Leave Review'
 			expect(current_path).to eq '/restaurants'
+			click_link 'KFC'
 			expect(page).to have_content('so so')
 		end
 
@@ -58,6 +59,7 @@ describe 'deleting a review' do
 	context 'User is logged out' do
 			it "doesn't allow user to delete a review" do
 			visit '/restaurants'
+			click_link 'KFC'
 			expect(page).not_to have_content 'Delete review'
 		end
 	end
@@ -67,12 +69,14 @@ describe 'deleting a review' do
 		it "doesn't allow an user to delete a review he has not written" do
 			login_as @user2
 			visit '/restaurants'
+			click_link 'KFC'
 			expect(page).not_to have_content 'Delete review'
 		end
 
 		it "allows an user to delete a review he has written" do
 			login_as @user
 			visit '/restaurants'
+			click_link 'KFC'
 			click_link 'Delete review'
 			expect(page).not_to have_content('ok ok')
 			expect(page).to have_content 'Review deleted successfully'

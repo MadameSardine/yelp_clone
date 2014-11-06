@@ -15,7 +15,6 @@ Capybara.register_driver :poltergeist do |app|
     })
   end
 Capybara.javascript_driver = :poltergeist
-# require 'support/database_cleaner'
 
 include Warden::Test::Helpers
 Warden.test_mode!
