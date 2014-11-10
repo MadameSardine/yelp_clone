@@ -1,17 +1,24 @@
+<article id="add-restaurant-button"><a href='/restaurants/new'>Add a restaurant</a></article>
+
 <% if @restaurants.any? %>
-	<%@restaurants.each do |restaurant| %>
-		<h2><%= link_to "#{restaurant.name}", restaurant_path(restaurant) %></h2>
-		<% if current_user && restaurant.user == current_user %>
-			<p><%= link_to "Edit #{restaurant.name}", edit_restaurant_path(restaurant) %></p>
-			<p><%= link_to "Delete #{restaurant.name}",restaurant_path(restaurant), method: :delete %></p>
+	<ul>
+		<%@restaurants.each do |restaurant| %>
+			<li>
+				<article class="restaurant-box">
+				  <aside class="image"><%= image_tag restaurant.image.url(:thumb) %></aside>
+					<h2><%= link_to "#{restaurant.name}", restaurant_path(restaurant) %></h2>
+					<h3>Average rating: <%= star_rating(restaurant.average_rating) %></h3>
+					<% if current_user && restaurant.user == current_user %>
+						<p class="restaurant-action-link"><%= link_to "Edit #{restaurant.name}", edit_restaurant_path(restaurant) %></p>
+						<p class="restaurant-action-link"><%= link_to "Delete #{restaurant.name}",restaurant_path(restaurant), method: :delete %></p>
+					<% end %>
+					<% unless restaurant.has_been_reviewed_by? (current_user) %>
+						<p class="restaurant-action-link"><%= link_to "Review #{restaurant.name}", new_restaurant_review_path(restaurant) %></p>
+					<% end %>
+				</article>
+			</li>
 		<% end %>
-		<% unless restaurant.has_been_reviewed_by? (current_user) %>
-			<p><%= link_to "Review #{restaurant.name}", new_restaurant_review_path(restaurant) %></p>
-		<% end %>
-		<h3>Average rating: <%= star_rating(restaurant.average_rating) %></h3>
-	<% end %>
+	</ul>
 <% else %>
 	No restaurants yet
 <% end %>
-
-<a href='/restaurants/new'>Add a restaurant</a>

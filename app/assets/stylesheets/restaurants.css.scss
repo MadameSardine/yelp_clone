@@ -1,3 +1,53 @@
 // Place all the styles related to the restaurants controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#add-restaurant-button{
+  text-align: center;
+}
+
+#add-restaurant-button a{
+  color: rgb(67, 112, 149);
+  font-weight: 800;
+  font-size: 30px;
+}
+
+ul {
+  list-style-type:none;
+}
+
+.restaurant-box{
+  position: relative;
+  display: block;
+  width: 80%;
+  border: 1px solid rgb(238, 238, 238);
+  margin: 12px;
+  padding: 8px;
+  height: 160px;
+}
+
+.restaurant-box a{
+  text-decoration: none;
+  color: rgb(67, 112, 149);
+}
+
+.restaurant-box h2{
+  font-family: 'Lobster', cursive;
+}
+
+.restaurant-box h3{
+  color: rgb(67, 112, 149);
+}
+
+.restaurant-box aside{
+  display: block;
+  float: right;
+  padding-right: 20px;
+}
+
+.restaurant-action-link {
+  position: relative;
+  display: block;
+  float: left;
+  margin-right: 30px;
+}
